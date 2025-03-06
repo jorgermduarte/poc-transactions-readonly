@@ -1,0 +1,29 @@
+version: '3'
+services:
+  primary-db:
+    image: gvenzl/oracle-xe:latest
+    container_name: primary-db
+    environment:
+      - APP_USER=PRIMARYDB
+      - APP_USER_PASSWORD=yourpassword
+      - ORACLE_DATABASE=PRIMARYDB
+      - ORACLE_PASSWORD=yourpassword
+    ports:
+      - "1521:1521"
+    volumes:
+      - ./volumes/oracle/primary-db:/opt/oracle/oradata
+    restart: always
+
+  standby-db:
+    image: gvenzl/oracle-xe:latest
+    container_name: standby-db
+    environment:
+      - APP_USER=STANDBYDB
+      - APP_USER_PASSWORD=yourpassword
+      - ORACLE_DATABASE=STANDBYDB
+      - ORACLE_PASSWORD=yourpassword
+    ports:
+      - "1522:1521"  # Standby database uses a different port
+    volumes:
+      - ./volumes/oracle/standby-db:/opt/oracle/oradata
+    restart: always
